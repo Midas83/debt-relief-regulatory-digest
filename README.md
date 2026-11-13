@@ -56,6 +56,8 @@ npx skills add Midas83/debt-relief-regulatory-digest
 
 Add `-g` to install it for all your projects instead of the current one, or `-a <agent>` to pick the agent.
 
+> **Windows PowerShell:** if you get an `UnauthorizedAccess` / execution-policy error, run `npx.cmd skills add Midas83/debt-relief-regulatory-digest` instead, or use Command Prompt.
+
 ### Claude.ai (web, desktop, mobile)
 
 1. Download `debt-relief-regulatory-digest.zip` from the [latest release](https://github.com/Midas83/debt-relief-regulatory-digest/releases/latest). The skill folder is at the root of the zip.
