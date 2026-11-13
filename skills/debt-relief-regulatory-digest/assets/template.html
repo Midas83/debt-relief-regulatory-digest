@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Regulatory Action Digest: {{WINDOW}}</title>
+<!--
+  TEMPLATE NOTES (delete nothing outside the marked optional blocks)
+  - Fill every {{PLACEHOLDER}}.
+  - Blocks between REPEAT START / REPEAT END are copied once per item.
+  - Blocks between OPTIONAL START / OPTIONAL END are removed when empty.
+  - The disclaimer and attribution blocks must stay exactly as written.
+  - Stage badge classes: stage-investigation, stage-complaint, stage-settlement,
+    stage-default, stage-judgment, stage-rule.
+  - Ledger rows with a count of 0 get class="ledger-row is-zero" and the count cell text "0".
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #F6F7F9;
+    --sheet: #FFFFFF;
+    --ink: #17223B;
+    --ink-soft: #4A5468;
+    --rule: #D6DBE4;
+    --accent: #1F4E79;
+    --zero: #8A93A3;
+    --note-bg: #EEF2F7;
+    --s-investigation: #5B6472;
+    --s-complaint: #2F5D8C;
+    --s-settlement: #8A5A00;
+    --s-default: #7A3E8F;
+    --s-judgment: #9B2C2C;
+    --s-rule: #2E6B4F;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #0F1522; --sheet: #161E2E; --ink: #E6EAF2; --ink-soft: #A9B2C3;
+      --rule: #2B3548; --accent: #8DB8E8; --zero: #6E788A; --note-bg: #1C2638;
+      --s-investigation: #A3ACBA; --s-complaint: #8DB8E8; --s-settlement: #E2B354;
+      --s-default: #C9A0DA; --s-judgment: #EE8F8F; --s-rule: #7FC4A1;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #0F1522; --sheet: #161E2E; --ink: #E6EAF2; --ink-soft: #A9B2C3;
+    --rule: #2B3548; --accent: #8DB8E8; --zero: #6E788A; --note-bg: #1C2638;
+    --s-investigation: #A3ACBA; --s-complaint: #8DB8E8; --s-settlement: #E2B354;
+    --s-default: #C9A0DA; --s-judgment: #EE8F8F; --s-rule: #7FC4A1;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Public Sans", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    font-size: 1rem; line-height: 1.55;
+  }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .page { max-width: 54rem; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+  h1, h2 { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-weight: 700; line-height: 1.2; }
+  h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); margin: 0 0 .35rem; letter-spacing: -.01em; }
+  h2 { font-size: 1.35rem; margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 2px solid var(--ink); }
+  .masthead { padding-bottom: 1.25rem; border-bottom: 1px solid var(--rule); }
+  .window { font-size: 1.1rem; color: var(--ink-soft); margin: 0; }
+  .credit { margin: .9rem 0 0; font-size: .92rem; color: var(--ink-soft); }
+  .credit a { font-weight: 600; }
+  .scope { margin: .35rem 0 0; font-size: .92rem; color: var(--ink-soft); }
+  .notice {
+    margin: 1.25rem 0 0; padding: .8rem 1rem; background: var(--note-bg);
+    border-left: 4px solid var(--accent); font-size: .92rem;
+  }
+  .notice p { margin: 0; }
+  .coverage { margin: 1.25rem 0 0; color: var(--ink-soft); font-size: .95rem; }
+
+  /* Agency ledger: the signature element */
+  .ledger { margin: 1.75rem 0 0; background: var(--sheet); border: 1px solid var(--rule); }
+  .ledger-caption { padding: .75rem 1rem; font-weight: 600; border-bottom: 1px solid var(--rule); }
+  .ledger-row {
+    display: grid; grid-template-columns: 1fr auto; align-items: baseline;
+    padding: .55rem 1rem; border-bottom: 1px solid var(--rule);
+  }
+  .ledger-row:last-child { border-bottom: 0; }
+  .ledger-count {
+    font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; font-weight: 700;
+    min-width: 2.5ch; text-align: right; font-variant-numeric: tabular-nums;
+  }
+  .ledger-row.is-zero .ledger-agency, .ledger-row.is-zero .ledger-count { color: var(--zero); }
+  .ledger-row.is-zero .ledger-agency::after { content: " (none found in window)"; font-size: .85rem; }
+
+  .topline { margin: 0; padding-left: 1.2rem; }
+  .topline li { margin-bottom: .45rem; }
+
+  /* Entries: docket rail + body */
+  .entry {
+    display: grid; grid-template-columns: 9.5rem 1fr; gap: 1.25rem;
+    padding: 1.25rem 0; border-bottom: 1px solid var(--rule);
+  }
+  .entry:last-of-type { border-bottom: 0; }
+  .rail { font-size: .9rem; color: var(--ink-soft); }
+  .rail .date { display: block; font-weight: 600; color: var(--ink); }
+  .rail .date-note { display: block; margin-top: .15rem; }
+  .badge {
+    display: inline-block; margin-top: .55rem; padding: .15rem .55rem;
+    border: 1.5px solid currentColor; border-radius: 3px;
+    font-size: .8rem; font-weight: 700;
+  }
+  .stage-investigation { color: var(--s-investigation); }
+  .stage-complaint { color: var(--s-complaint); }
+  .stage-settlement { color: var(--s-settlement); }
+  .stage-default { color: var(--s-default); }
+  .stage-judgment { color: var(--s-judgment); }
+  .stage-rule { color: var(--s-rule); }
+  .body h3 { margin: 0 0 .15rem; font-size: 1.1rem; line-height: 1.3; }
+  .agency-line { margin: 0 0 .6rem; color: var(--ink-soft); font-size: .92rem; }
+  .body p { margin: .4rem 0; max-width: 68ch; }
+  .label { font-weight: 600; }
+  .tags { display: flex; flex-wrap: wrap; gap: .35rem; margin: .5rem 0; padding: 0; list-style: none; }
+  .tags li { padding: .1rem .5rem; background: var(--note-bg); border-radius: 999px; font-size: .82rem; }
+  .checks { margin: .35rem 0 .5rem; padding-left: 1.2rem; max-width: 68ch; }
+  .checks li { margin-bottom: .3rem; }
+  .flag { font-size: .88rem; color: var(--ink-soft); border-left: 3px solid var(--rule); padding-left: .6rem; }
+  .source { font-size: .88rem; }
+
+  .simple-list { margin: 0; padding-left: 1.2rem; }
+  .simple-list li { margin-bottom: .6rem; max-width: 68ch; }
+
+  footer.closing { margin-top: 3rem; padding-top: 1.25rem; border-top: 2px solid var(--ink); font-size: .9rem; color: var(--ink-soft); }
+  footer.closing p { margin: 0 0 .75rem; max-width: 72ch; }
+  .footer-credit { color: var(--ink); }
+
+  @media (max-width: 640px) {
+    .entry { grid-template-columns: 1fr; gap: .5rem; }
+    .rail .date-note { display: inline; margin-left: .35rem; }
+    .badge { margin-top: .35rem; }
+  }
+  @media print {
+    body { background: #fff; }
+    .entry { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="masthead">
+    <h1>Regulatory Action Digest</h1>
+    <p class="window">{{WINDOW}}</p>
+    <p class="scope">Debt relief, settlement, collection, telemarketing and lead gen. Written for {{AUDIENCE_PLAIN}}. Focus: {{FOCUS}}.</p>
+    <!-- ATTRIBUTION (keep exactly) -->
+    <p class="credit">From the regulatory digest skill by <a href="https://www.linkedin.com/in/dexterweatherly/" rel="noopener" target="_blank">Dexter Weatherly</a></p>
+    <!-- /ATTRIBUTION -->
+    <!-- DISCLAIMER SHORT (keep exactly) -->
+    <div class="notice" role="note">
+      <p><strong>Not legal advice.</strong> This digest summarizes public records. Nothing in it should be construed as legal advice. Check with your attorney about how any ruling or regulation applies to your business.</p>
+    </div>
+    <!-- /DISCLAIMER SHORT -->
+    <p class="coverage">{{COVERAGE_NOTE}}</p>
+  </header>
+
+  <section class="ledger" aria-label="Actions found by agency">
+    <div class="ledger-caption">Actions found this window, by agency checked</div>
+    <!-- REPEAT START: ledger row (use class "ledger-row is-zero" when the count is 0) -->
+    <div class="ledger-row">
+      <span class="ledger-agency">{{AGENCY_NAME}}</span>
+      <span class="ledger-count">{{AGENCY_COUNT}}</span>
+    </div>
+    <!-- REPEAT END -->
+  </section>
+
+  <h2>Top line</h2>
+  <ul class="topline">
+    <!-- REPEAT START: up to three observations -->
+    <li>{{TOPLINE_ITEM}}</li>
+    <!-- REPEAT END -->
+  </ul>
+
+  <!-- OPTIONAL START: core actions -->
+  <h2>Core actions</h2>
+  <!-- REPEAT START: entry -->
+  <article class="entry">
+    <div class="rail">
+      <span class="date">{{DATE}}</span>
+      <span class="date-note">{{DATE_NOTE}}</span><!-- e.g. "order signed Oct 14"; delete the span if none -->
+      <span class="badge {{STAGE_CLASS}}">{{STAGE_LABEL}}</span>
+    </div>
+    <div class="body">
+      <h3>{{RESPONDENT}}</h3>
+      <p class="agency-line">{{AGENCY_LINE}}</p>
+      <p><span class="label">What happened:</span> {{WHAT_HAPPENED}}</p>
+      <!-- OPTIONAL START: default judgment note -->
+      <p class="flag">Entered by default: the defendants did not contest the allegations.</p>
+      <!-- OPTIONAL END -->
+      <ul class="tags" aria-label="Practices">
+        <!-- REPEAT START: tag --><li>{{PRACTICE_TAG}}</li><!-- REPEAT END -->
+      </ul>
+      <p><span class="label">Relief:</span> {{RELIEF}}</p>
+      <!-- OPTIONAL START: figure discrepancy or unopened order -->
+      <p class="flag">{{FIGURE_NOTE}}</p>
+      <!-- OPTIONAL END -->
+      <p class="label">What to check</p>
+      <ul class="checks">
+        <!-- REPEAT START: check --><li>{{CHECK}}</li><!-- REPEAT END -->
+      </ul>
+      <p class="source">Source: <a href="{{SOURCE_URL}}" rel="noopener" target="_blank">{{SOURCE_NAME}}</a></p>
+    </div>
+  </article>
+  <!-- REPEAT END -->
+  <!-- OPTIONAL END -->
+
+  <!-- OPTIONAL START: adjacent actions (same entry markup as above; add one sentence on why it is relevant in WHAT_HAPPENED or a flag) -->
+  <h2>Adjacent actions</h2>
+  <!-- REPEAT entry blocks here -->
+  <!-- OPTIONAL END -->
+
+  <!-- OPTIONAL START: rules and guidance -->
+  <h2>Rules &amp; guidance</h2>
+  <ul class="simple-list">
+    <!-- REPEAT START -->
+    <li><strong>{{RULE_TITLE}}</strong> ({{RULE_AGENCY}}). {{RULE_SUMMARY}} <span class="label">What to check:</span> {{RULE_CHECK}} <a href="{{RULE_URL}}" rel="noopener" target="_blank">Source</a></li>
+    <!-- REPEAT END -->
+  </ul>
+  <!-- OPTIONAL END -->
+
+  <!-- OPTIONAL START: unverified -->
+  <h2>Unverified and watch list</h2>
+  <ul class="simple-list">
+    <!-- REPEAT START -->
+    <li>{{UNVERIFIED_ITEM}} <em>Why it is unverified:</em> {{UNVERIFIED_REASON}} <a href="{{UNVERIFIED_URL}}" rel="noopener" target="_blank">Secondary source</a></li>
+    <!-- REPEAT END -->
+  </ul>
+  <!-- OPTIONAL END -->
+
+  <footer class="closing">
+    <!-- DISCLAIMER FULL (keep exactly) -->
+    <p><strong>Disclaimer.</strong> Nothing in this digest should be construed as legal advice. It summarizes public records from government agencies as of {{GENERATED_DATE}}, and may be incomplete or out of date. Allegations in complaints and settlements are not findings of wrongdoing. Always check with your attorney regarding any ruling, order, or regulation before acting on it.</p>
+    <!-- /DISCLAIMER FULL -->
+    <!-- ATTRIBUTION (keep exactly) -->
+    <p class="footer-credit">Compiled with the Debt Relief Regulatory Digest skill, created by <a href="https://www.linkedin.com/in/dexterweatherly/" rel="noopener" target="_blank">Dexter Weatherly</a>.</p>
+    <!-- /ATTRIBUTION -->
+  </footer>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Build output
+*.zip
+dist/
+
+# Generated digests (don't commit outputs)
+regulatory-digest-*.html
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Secrets
+.env
+*.key
