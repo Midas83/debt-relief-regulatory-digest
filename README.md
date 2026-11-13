@@ -1,6 +1,6 @@
-# Debt Relief Regulatory Digest — a Claude skill
+# Debt Relief Regulatory Digest — an Agent Skill
 
-A [Claude Agent Skill](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview) that builds a sourced, shareable HTML digest of recent regulatory and enforcement actions that matter to debt relief, debt settlement, credit counseling, debt collection, credit repair, student loan relief, telemarketing, and lead generation.
+An [Agent Skill](https://agentskills.io) that builds a sourced, shareable HTML digest of recent regulatory and enforcement actions that matter to debt relief, debt settlement, credit counseling, debt collection, credit repair, student loan relief, telemarketing, and lead generation.
 
 It pulls from the FTC, CFPB, FCC, state attorneys general, and state financial regulators, verifies each action against the primary record, labels it honestly by legal stage, and turns it into concrete "what to check" notes for your own business.
 
@@ -44,19 +44,25 @@ The `skills/debt-relief-regulatory-digest/` folder is the installable unit. Ever
 
 ## Install
 
+The skill follows the open [Agent Skills](https://agentskills.io/specification) format, so the same folder works in any agent that reads `SKILL.md` skills. Whichever you use, it needs **web search and web fetch turned on**, and the ability to write a file or publish an HTML page.
+
+### Any supported agent (quickest)
+
+The [`skills` CLI](https://github.com/vercel-labs/skills) installs straight from this repo into Claude Code, Codex, GitHub Copilot, Cursor and many other agents:
+
+```bash
+npx skills add Midas83/debt-relief-regulatory-digest
+```
+
+Add `-g` to install it for all your projects instead of the current one, or `-a <agent>` to pick the agent.
+
 ### Claude.ai (web, desktop, mobile)
 
-1. Zip the skill folder so the folder itself is at the root of the zip:
-   ```bash
-   cd skills && zip -r ../debt-relief-regulatory-digest.zip debt-relief-regulatory-digest
-   ```
-   (Or download the zip attached to the latest GitHub release, if there is one.)
+1. Download `debt-relief-regulatory-digest.zip` from the [latest release](https://github.com/Midas83/debt-relief-regulatory-digest/releases/latest). The skill folder is at the root of the zip.
 2. In Claude, open **Settings → Capabilities → Skills**, choose **Upload skill**, and select the zip.
 3. Make sure web search is enabled.
 
 ### Claude Code
-
-Copy the skill folder into your personal or project skills directory:
 
 ```bash
 # personal (all projects)
@@ -66,11 +72,35 @@ cp -r skills/debt-relief-regulatory-digest ~/.claude/skills/
 cp -r skills/debt-relief-regulatory-digest .claude/skills/
 ```
 
+### OpenAI Codex (CLI, IDE extension, ChatGPT desktop app)
+
+Codex reads skills from `.agents/skills` folders ([docs](https://learn.chatgpt.com/docs/build-skills)):
+
+```bash
+# personal (all projects)
+cp -r skills/debt-relief-regulatory-digest ~/.agents/skills/
+
+# or project-only, from your repo root
+cp -r skills/debt-relief-regulatory-digest .agents/skills/
+```
+
+In ChatGPT, type `@` to pick the skill. Standalone skills aren't available in ChatGPT's web chat yet; there, skills only arrive bundled in plugins.
+
+### GitHub Copilot
+
+Copilot reads personal skills from `~/.copilot/skills` or `~/.agents/skills`, and project skills from `.github/skills`, `.claude/skills` or `.agents/skills` ([docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills)):
+
+```bash
+cp -r skills/debt-relief-regulatory-digest ~/.copilot/skills/
+```
+
 ### Claude API / Agent SDK
 
 Upload the `skills/debt-relief-regulatory-digest/` folder through the Skills API, or point the Agent SDK at a directory that contains it. See Anthropic's [Agent Skills docs](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview).
 
-**Requirements:** web search, web fetch, and the ability to write a file or publish an HTML artifact.
+### Other agents
+
+Any agent that supports Agent Skills will load this folder from its skills directory; check that agent's docs for the path. The skill is written and tested primarily with Claude. Other models should follow it, but check their first digest closely — especially that stage language ("alleges", "agreed to settle") is kept exactly.
 
 ## Use
 

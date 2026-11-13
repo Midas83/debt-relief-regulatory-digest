@@ -1,7 +1,12 @@
 ---
 name: debt-relief-regulatory-digest
 description: Build a sourced, shareable HTML digest of recent regulatory and enforcement actions that matter to debt relief, debt settlement, credit counseling, debt collection, credit repair, student loan relief, telemarketing, and lead generation, drawn from the FTC, CFPB, FCC, state attorneys general, and state financial regulators. Use whenever the user asks what regulators have done lately, wants an enforcement roundup or regulatory update, asks "anything new from the FTC / CFPB / state AGs", wants to know what regulators are flagging in debt relief marketing, telemarketing, or lead gen, or is preparing a compliance briefing, newsletter section, or post about recent enforcement, even if they never say "digest".
+license: CC-BY-4.0. See LICENSE for complete terms.
 compatibility: Requires web search and web fetch, plus the ability to write a file (or publish an HTML artifact).
+metadata:
+  author: Dexter Weatherly
+  version: "1.0.1"
+  homepage: "https://github.com/Midas83/debt-relief-regulatory-digest"
 ---
 
 # Debt Relief Regulatory Action Digest

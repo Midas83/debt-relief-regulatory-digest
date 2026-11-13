@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0.1 — 2026-11-13
+
+Packaging only; the skill's instructions and template are unchanged.
+
+- Added `license` and `metadata` (author, version, homepage) to the `SKILL.md` frontmatter, per the Agent Skills spec.
+- README install instructions now cover the `skills` CLI, Claude.ai, Claude Code, OpenAI Codex, GitHub Copilot, the Claude API and other Agent Skills agents.
+
 ## v1.0.0 — 2026-11-12
 
 Initial public release.
